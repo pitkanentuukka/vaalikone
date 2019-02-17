@@ -45,13 +45,31 @@ while ($row = mysqli_fetch_array($result))
 
 }
 */
+/*
 
 
 
 
 
-	$query = "SELECT * FROM kysymys";
+
+ */
+$query = "SELECT * FROM kysymys";
+$result = $mysqli->query($query);
+
+while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+	echo "<div>". $row['kysymys']."</div>";
+	echo "<input type='radio' name=" . $row['id'];
+		echo " value='1'>vahvasti eri mieltä";
+	echo "<input type='radio' name=" . $row['id'];
+		echo " value='2'>eri mieltä";
+	echo "<input type='radio' name=" . $row['id'];
+		echo " value='3'>ei mitään mieltä";
+	echo "<input type='radio' name=" . $row['id'];
+		echo " value='4'>samaa mieltä";
+	echo "<input type='radio' name=" . $row['id'];
+		echo " value='5'>vahvasti samaa mieltä";
+		
 
 
 }
-
+}
