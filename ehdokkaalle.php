@@ -57,7 +57,9 @@ $query = "SELECT * FROM kysymys";
 $result = $mysqli->query($query);
 
 while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+	echo "<p>";
 	echo "<div>". $row['kysymys']."</div>";
+	echo "<div>";	
 	echo "<input type='radio' name=" . $row['id'];
 		echo " value='1'>vahvasti eri mieltä";
 	echo "<input type='radio' name=" . $row['id'];
@@ -68,8 +70,12 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 		echo " value='4'>samaa mieltä";
 	echo "<input type='radio' name=" . $row['id'];
 		echo " value='5'>vahvasti samaa mieltä";
-		
+	echo "</div>";	
+	echo "<div>";	
+	echo "Lisäkommenti: <textarea name=$row[id] rows=5 cols=40></textarea>";
 
 
+	echo "</p>";
 }
+echo "<input type=submit value=submit name='lähetä'>";
 }
