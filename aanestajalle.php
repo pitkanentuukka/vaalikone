@@ -6,6 +6,7 @@ if (isset($_POST['submit'])) {
 	// find the candidates to match the answers
 	$vaalipiiri = $mysqli->real_escape_string($_POST['vaalipiiri']);
 	$haeehdokkaat = "select * from ehdokas where vaalipiiri = '$vaalipiiri'";
+	$ehdokkaat_result = $mysqli->query($haeehdokkaat);
 
 	// and then the crazy difficult part ... 
 	$get_question_count = "select count(*) from kysymys";
@@ -13,7 +14,11 @@ if (isset($_POST['submit'])) {
 	$question_count_row=$count_result->fetch_row();
 	$question_count = $question_count_row[0]; 
 
-
+	// at least two layered loops
+	while ($row = $ehdokkaat_result->fetch_array(MYSQLI_ASSOC)) {
+		var_dump($row);
+	}
+	
 	
 
 } else {
