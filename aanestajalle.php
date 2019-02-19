@@ -4,10 +4,10 @@ include("sql.php");
 
 if (isset($_POST['submit'])) {
 	// find the candidates to match the answers
-	$vaalipiiri = $mysqli->real_escape_string($_POST['vaalipiiri']);
-	$haeehdokkaat = "select * from ehdokas where vaalipiiri = '$vaalipiiri'";
-	$ehdokkaat_result = $mysqli->query($haeehdokkaat);
-
+	$district = $mysqli->real_escape_string($_POST['vaalipiiri']);
+	$getcandidates = "select * from ehdokas where vaalipiiri = '$district'";
+	$candidates_result = $mysqli->query($getcandidates);
+	if ($candidates_result->num_rows == 0) exit(" emme löytäneet ehdokkaita valitsemastasii vaalipiiristä");
 	// and then the crazy difficult part ... 
 	$get_question_count = "select count(*) from kysymys";
 	$count_result = $mysqli->query($get_question_count);
@@ -15,11 +15,34 @@ if (isset($_POST['submit'])) {
 	$question_count = $question_count_row[0]; 
 
 	// at least two layered loops
-	while ($row = $ehdokkaat_result->fetch_array(MYSQLI_ASSOC)) {
-		var_dump($row);
+	// three?
+	//var_dump($candidates_result);
+	while ($row = $candidates_result->fetch_array(MYSQLI_ASSOC)) {
+		//var_dump($row);
+		$candidateid = $mysqli->real_escape_string($row['id']);
+		$getcandidateanswers = "SELECT * FROM vastaus WHERE ehdokasid = '$candidateid'";
+		$result = $mysqli->query($getcandidateanswers);
+		
+		//var_dump($result);
+		$answers = $_POST['radios'];
+		$comparison_numbers = array();
+		foreach ($answers as $answer) {
+			echo "<p>äänestäjän vastaus: ";
+			var_dump($answer);
+			echo "</p>";
+			//echo $answer . "<p>";
+			while ($candidateanswer = $result->fetch_array(MYSQLI_ASSOC)) {
+			echo "<p>ehdokkaan vastaus: ";
+				var_dump($candidateanswer['vastaus']);
+			echo "</p>";
+			echo "<p>vertausluku: ";	
+			$comparison = abs($candidateanswer['vastaus'] - $answer);
+			echo $comparison . "</p>";
+			}
+		}
+	
+	
 	}
-	
-	
 
 } else {
 
