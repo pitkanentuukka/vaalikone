@@ -17,32 +17,46 @@ if (isset($_POST['submit'])) {
 	// at least two layered loops
 	// three?
 	//var_dump($candidates_result);
+
+		$comparison_numbers = array();
 	while ($row = $candidates_result->fetch_array(MYSQLI_ASSOC)) {
 		//var_dump($row);
 		$candidateid = $mysqli->real_escape_string($row['id']);
+		$candidate_name = $row['nimi'];
+		//echo "<p>ehdokkaan nimi: " . $candidate_name . "</p>";
 		$getcandidateanswers = "SELECT * FROM vastaus WHERE ehdokasid = '$candidateid'";
 		$result = $mysqli->query($getcandidateanswers);
 		
 		//var_dump($result);
 		$answers = $_POST['radios'];
-		$comparison_numbers = array();
+		$comparison_sum = 0;
 		foreach ($answers as $answer) {
-			echo "<p>äänestäjän vastaus: ";
-			var_dump($answer);
-			echo "</p>";
+			//echo "<p>äänestäjän vastaus: ";
+			//var_dump($answer);
+			//echo "</p>";
 			//echo $answer . "<p>";
 			while ($candidateanswer = $result->fetch_array(MYSQLI_ASSOC)) {
-			echo "<p>ehdokkaan vastaus: ";
-				var_dump($candidateanswer['vastaus']);
-			echo "</p>";
-			echo "<p>vertausluku: ";	
+			//echo "<p>ehdokkaan vastaus: ";
+				//var_dump($candidateanswer['vastaus']);
+			//echo "</p>";
+			//echo "<p>vertausluku: ";	
 			$comparison = abs($candidateanswer['vastaus'] - $answer);
-			echo $comparison . "</p>";
+			//echo $comparison . "</p>";
+			$comparison_sum += $comparison;
 			}
+			//echo "<p> summa : " . $comparison_sum . "</p>";
+			$comparison_numbers[$candidateid] = $comparison_sum;
 		}
 	
 	
 	}
+	echo "<p>numbers: ";
+	var_dump($comparison_numbers);
+	echo "</p><p>sorted:";
+	asort($comparison_numbers);
+	var_dump($comparison_numbers);
+	echo " </p>";
+
 
 } else {
 
