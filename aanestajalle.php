@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
 	// three?
 	//var_dump($candidates_result);
 
-		$comparison_numbers = array();
+	$comparison_numbers = array();
 	while ($row = $candidates_result->fetch_array(MYSQLI_ASSOC)) {
 		//var_dump($row);
 		$candidateid = $mysqli->real_escape_string($row['id']);
@@ -50,12 +50,51 @@ if (isset($_POST['submit'])) {
 	
 	
 	}
-	echo "<p>numbers: ";
+	/*echo "<p>numbers: ";
 	var_dump($comparison_numbers);
 	echo "</p><p>sorted:";
 	asort($comparison_numbers);
 	var_dump($comparison_numbers);
-	echo " </p>";
+	echo " </p>";*/
+
+
+	echo "<p><h2>sopivimmat ehdokkaat: </h2></p>";
+
+	$getquestions = "SELECT * FROM kysymys";
+	$questionresult = $mysqli->query($getquestions);
+	foreach ($comparison_numbers as $id => $value) {
+		
+		//var_dump($comparison_numbers);
+		$query = "SELECT * FROM ehdokas where id = $id";
+		//var_dump($query);
+		$result = $mysqli->query($query);
+		$candidaterow = $result->fetch_row();
+		//var_dump($result);
+		///var_dump($result);
+		echo "<p>";
+	
+		echo "Nimi: ";
+		echo $candidaterow[3];
+		echo "<br />";
+		echo "Numero: ";
+		echo $candidaterow[4];
+		echo "<br />";
+		echo "puolue: ";
+		$getparty = "SELECT * from puolue WHERE id = '$candidaterow[1]'";
+		$partyresult = $mysqli->query($getparty);
+
+		//var_dump($partyresult);
+		$partyrow = $partyresult->fetch_row();
+		echo $partyrow[1];
+		echo "<br />";
+
+		echo "</p>";
+	
+
+
+
+	}
+
 
 
 } else {
