@@ -60,8 +60,6 @@ if (isset($_POST['submit'])) {
 
 	echo "<p><h2>sopivimmat ehdokkaat: </h2></p>";
 
-	$getquestions = "SELECT * FROM kysymys";
-	$questionresult = $mysqli->query($getquestions);
 	foreach ($comparison_numbers as $id => $value) {
 		
 		//var_dump($comparison_numbers);
@@ -72,7 +70,7 @@ if (isset($_POST['submit'])) {
 		//var_dump($result);
 		///var_dump($result);
 		echo "<p>";
-	
+		$candidateid = $candidaterow[0];
 		echo "Nimi: ";
 		echo $candidaterow[3];
 		echo "<br />";
@@ -83,10 +81,27 @@ if (isset($_POST['submit'])) {
 		$getparty = "SELECT * from puolue WHERE id = '$candidaterow[1]'";
 		$partyresult = $mysqli->query($getparty);
 
-		//var_dump($partyresult);
+		//var_dump($questionresult);
 		$partyrow = $partyresult->fetch_row();
 		echo $partyrow[1];
 		echo "<br />";
+		$getquestions = "SELECT * FROM kysymys";
+		$questionresult = $mysqli->query($getquestions);
+		while ($question = $questionresult->fetch_row()) {
+			$questionid = $question[0];
+			$getanswer = "SELECT * FROM vastaus WHERE kysymysid = '$questionid' AND ehdokasid = '$candidateid'";
+			$answerresult = $mysqli->query($getanswer);
+			$answer = $answerresult->fetch_array(MYSQLI_ASSOC);
+			$questiontext = $question[1];
+			echo $questiontext;
+			echo "<br />";
+			echo $answer['vastaus'];
+			echo "<br />";
+			echo $answer['teksti'];
+			echo "<br />";
+
+
+		}
 
 		echo "</p>";
 	
